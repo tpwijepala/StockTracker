@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title> Thimira Wijepala </title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Stock Updater">
+        
+        <meta name="author" content="Thimira Wijepala">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- <link rel="stylesheet" href="/styles.css"> -->
+        <script type="commonjs" src="./main.js">main()</script>
+    </head>
+    <body>
+        <h1>Stock Updates</h1>
+        <form action="/" method="post">
+            <input type="text" placeholder="Stock Name" name="stock">
+            <button type="submit">Add Stock</button>
+        </form>
+        <% data.forEach(element => { %>      
+        <p><%= element.stock %></p>
+        <% }) %>
+        <!-- <p id="data"></p> -->
+        <!-- <script type="text/javascript" src="../src/index.js">main()</script> -->
+</html>
