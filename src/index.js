@@ -17,8 +17,9 @@ function main() {
         data = []
         
         var cookies = req.cookies;
+        console.log("Retriving Stocks ...")
         var start = Date.now()
-
+        
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
@@ -40,6 +41,7 @@ function main() {
     app.post("/", async (req, res) => {
         const newStockName = req.body.stock
         if (!req.cookies[newStockName]) {
+            console.log("adding new stock "+newStockName+" ...")
             const newStock = await scrapStock.scrap('https://ca.finance.yahoo.com/quote/'+newStockName);
             res.setHeader("set-cookie", [newStockName+"="+"https://ca.finance.yahoo.com/quote/"+newStockName]);
             

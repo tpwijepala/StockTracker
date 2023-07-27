@@ -7,15 +7,17 @@
         <meta name="author" content="Thimira Wijepala">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- <link rel="stylesheet" href="/styles.css"> -->
-        <script type="commonjs" src="./main.js">main()</script>
+        <link rel="stylesheet" href="./styles.css">
     </head>
+    
     <body>
-        <h1>Stock Updates</h1>
+        <h1>Stock Tracker</h1>
         <form action="/" method="post">
             <input type="text" placeholder="Stock Name" name="stock">
             <button type="submit">Add Stock</button>
         </form>
+        <h3>Your List of Stocks</h3>
+
         <% data.forEach(element => { %>      
         <p><%= element.stock %></p>
         <% }) %>
