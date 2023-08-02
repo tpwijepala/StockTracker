@@ -12,10 +12,17 @@
     
     <body>
         <h1>Stock Tracker</h1>
+
         <form action="/" method="post">
             <input type="text" placeholder="Stock Name" name="stockAdd">
-            <button type="submit">Add</button>
+            <button type="submit">Add Stock</button>
         </form>
+
+        <form action="/" method="post">
+            <input type="text" placeholder="Stock Name" name="stockDelete">
+            <button type="submit">Delete Stock</button>
+        </form>
+
         <h3>Your List of Stocks:</h3>
 
         <div class="stockList">
@@ -31,8 +38,5 @@
             <% } %>
         </div>
         
-        <form action="/" method="post">
-            <input type="text" placeholder="Stock Name" name="stockDelete">
-            <button type="submit">Delete</button>
-        </form>
+        
 </html>
