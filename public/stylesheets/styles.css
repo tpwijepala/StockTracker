@@ -1,0 +1,13 @@
+body {
+    min-width:300px;
+    align-items: center;
+    text-align: center;
+}
+
+p {
+    padding-left: 5%;
+}
+
+div#stockList {
+    padding-left: 10%;
+}
