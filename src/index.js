@@ -7,6 +7,7 @@ require('events').EventEmitter.defaultMaxListeners = 20;
 
 const scrapStock = require('./scrapStock');
 const helper = require('./helper');
+const searchURL = "https://ca.finance.yahoo.com/quote/"
 
 function main() {
     var stocks = [];
@@ -23,7 +24,7 @@ function main() {
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
-                data[values[i][0]] = values[i]
+                data[searchURL+(values[i][0].substr(-5,4))] = values[i]
             }
         })
         
@@ -41,11 +42,12 @@ function main() {
         const stockDelete = req.body.stockDelete
         if (newStockAdd){
             if (!req.cookies[newStockAdd]) {
+                const url = searchURL + newStockAdd
                 console.log("adding new stock "+newStockAdd+" ...")
-                const newStock = await scrapStock.scrap('https://ca.finance.yahoo.com/quote/'+newStockAdd);
-                res.setHeader("set-cookie", [newStockAdd+"="+"https://ca.finance.yahoo.com/quote/"+newStockAdd]);
+                const newStock = await scrapStock.scrap(url);
+                res.setHeader("set-cookie", [newStockAdd+"="+url]);
                 
-                data[newStockAdd] = newStock
+                data[url] = newStock
                 console.log(newStockAdd + " has been added")
 
             } else {
@@ -53,9 +55,10 @@ function main() {
             }
         }
         if (stockDelete){
-            if (req.cookies[stockDelete]) {
+            const url = req.cookies[stockDelete]
+            if (url) {
                 res.clearCookie(stockDelete)
-                delete data[stockDelete];
+                delete data[url];
                 console.log(stockDelete + " has been removed")
 
             } else {

@@ -21,9 +21,13 @@
         
         <% for (const [key, value] of Object.entries(data)) { %>
             <p><%= value %></p>
-          <% } %>
-        <!-- <p id="data"></p> -->
-        <!-- <script type="text/javascript" src="../src/index.js">main()</script> -->
+            <form action='<%= key %>' method="get" target="_blank">
+                ---- For more info: 
+                <button type="submit"><%= '('+key.substr(-4,4)+')' %></button>
+            </form> <br>
+        <% } %>
+
+        
         <form action="/" method="post">
             <input type="text" placeholder="Stock Name" name="stockDelete">
             <button type="submit">Delete</button>
