@@ -14,7 +14,7 @@ function main() {
     
     app.get("/", async (req, res) => {
         stocks = []
-        data = []
+        data = {}
         
         var cookies = req.cookies;
         console.log("Retriving Stocks ...")
@@ -23,9 +23,7 @@ function main() {
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
-                data.push({
-                    stock:values[i]
-                })
+                data[values[i][0]] = values[i]
             }
         })
         
@@ -33,28 +31,38 @@ function main() {
         console.log("Time Taken: " + (delta/1000))
 
         console.log(data)
-        res.render(path.dirname(__dirname) + '/index.html', { data: data});
+        res.render(path.dirname(__dirname) + '/index.html', {data:data});
         
     });
 
     // updating html
     app.post("/", async (req, res) => {
-        const newStockName = req.body.stock
-        if (!req.cookies[newStockName]) {
-            console.log("adding new stock "+newStockName+" ...")
-            const newStock = await scrapStock.scrap('https://ca.finance.yahoo.com/quote/'+newStockName);
-            res.setHeader("set-cookie", [newStockName+"="+"https://ca.finance.yahoo.com/quote/"+newStockName]);
-            
-            data.push({
-                stock: newStock
-            })
-            console.log(newStock)
+        const newStockAdd = req.body.stockAdd
+        const stockDelete = req.body.stockDelete
+        if (newStockAdd){
+            if (!req.cookies[newStockAdd]) {
+                console.log("adding new stock "+newStockAdd+" ...")
+                const newStock = await scrapStock.scrap('https://ca.finance.yahoo.com/quote/'+newStockAdd);
+                res.setHeader("set-cookie", [newStockAdd+"="+"https://ca.finance.yahoo.com/quote/"+newStockAdd]);
+                
+                data[newStockAdd] = newStock
+                console.log(newStockAdd + " has been added")
 
-        } else {
-            console.log("Stock " + newStockName + " has already been added previously")
+            } else {
+                console.log("Stock " + newStockName + " has already been added previously")
+            }
         }
+        if (stockDelete){
+            if (req.cookies[stockDelete]) {
+                res.clearCookie(stockDelete)
+                delete data[stockDelete];
+                console.log(stockDelete + " has been removed")
 
-        res.render(path.dirname(__dirname)+'/index.html', {data: data})
+            } else {
+                console.log("Stock " + stockDelete + " does not exist on the list")
+            }
+        }
+        res.render(path.dirname(__dirname)+'/index.html', {data:data})
     });
     
 

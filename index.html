@@ -13,14 +13,19 @@
     <body>
         <h1>Stock Tracker</h1>
         <form action="/" method="post">
-            <input type="text" placeholder="Stock Name" name="stock">
-            <button type="submit">Add Stock</button>
+            <input type="text" placeholder="Stock Name" name="stockAdd">
+            <button type="submit">Add</button>
         </form>
         <h3>Your List of Stocks</h3>
 
-        <% data.forEach(element => { %>      
-        <p><%= element.stock %></p>
-        <% }) %>
+        
+        <% for (const [key, value] of Object.entries(data)) { %>
+            <p><%= value %></p>
+          <% } %>
         <!-- <p id="data"></p> -->
         <!-- <script type="text/javascript" src="../src/index.js">main()</script> -->
+        <form action="/" method="post">
+            <input type="text" placeholder="Stock Name" name="stockDelete">
+            <button type="submit">Delete</button>
+        </form>
 </html>
