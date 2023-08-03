@@ -4,10 +4,14 @@ body {
     text-align: center;
 }
 
-p {
+/* p {
     padding-left: 5%;
-}
+} */
 
-div#stockList {
-    padding-left: 10%;
-}
+.stockItem {
+    width: 25%;
+    padding: 5px;
+    border: 3px solid gray;
+    margin: 2% auto;
+    box-shadow: 5px 5px 2px gray;
+  }

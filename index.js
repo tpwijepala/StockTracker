@@ -24,7 +24,7 @@ function main() {
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
-                data[searchURL+(values[i][0].substr(-5,4))] = values[i]
+                data[searchURL+(values[i][0].substr(-5,4))] = helper.concatArray(values[i])
             }
         })
         
@@ -47,7 +47,7 @@ function main() {
                 const newStock = await scrapStock.scrap(url);
                 res.setHeader("set-cookie", [newStockAdd+"="+url]);
                 
-                data[url] = newStock
+                data[url] = helper.concatArray[newStock]
                 console.log(newStockAdd + " has been added")
 
             } else {
