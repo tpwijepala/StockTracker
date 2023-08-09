@@ -36,7 +36,7 @@ async function getAdjPercent(page) {
 async function scrapStock(url) {
     
     const browser = await puppeteer.launch({
-        executablePath: './chrome/chrome.exe', 
+        executablePath: './chrome-win64/chrome.exe', 
     });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(150000);
