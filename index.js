@@ -3,7 +3,6 @@ const express = require("express");
 // const window = require("window");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-require('events').EventEmitter.defaultMaxListeners = 20;
 
 const scrapStock = require(__dirname+'/public/javascripts/scrapStock');
 const helper = require(__dirname+'/public/javascripts/helper');
@@ -40,6 +39,7 @@ function main() {
     app.post("/", async (req, res) => {
         const newStockAdd = req.body.stockAdd
         const stockDelete = req.body.stockDelete
+
         if (newStockAdd){
             if (!req.cookies[newStockAdd]) {
                 const url = searchURL + newStockAdd
@@ -47,25 +47,25 @@ function main() {
                 const newStock = await scrapStock.scrap(url);
                 res.setHeader("set-cookie", [newStockAdd+"="+url]);
                 
-                data[url] = helper.concatArray[newStock]
+                data[url] = helper.concatArray(newStock)
                 console.log(newStockAdd + " has been added")
 
             } else {
-                console.log("Stock " + newStockName + " has already been added previously")
+                console.log("Stock " + newStockAdd + " has already been added previously")
             }
         }
+
         if (stockDelete){
             const url = req.cookies[stockDelete]
             if (url) {
                 res.clearCookie(stockDelete)
                 delete data[url];
                 console.log(stockDelete + " has been removed")
-
-            } else {
-                console.log("Stock " + stockDelete + " does not exist on the list")
             }
         }
+
         res.render(__dirname+'/index.html', {data:data})
+
     });
     
 

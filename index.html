@@ -19,20 +19,18 @@
             <button type="submit">Add Stock</button>
         </form>
 
-        <form action="/" method="post">
-            <input type="text" placeholder="Stock Name" name="stockDelete">
-            <button type="submit">Delete Stock</button>
-        </form>
-
         <h3>Your List of Stocks:</h3>
 
         <ul class="stockList">
             <% for (const [key, value] of Object.entries(data)) { %>
                 <div id="<%= key %>" class="stockItem">
-                    <button class="close-button" aria-label="Close alert" type="button">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    
+                    <div class="close-button">
+                        <form action="/" method="post">
+                            <input type="hidden" name="stockDelete" value="<%= key.substr(-4,4) %>">
+                            <button type="submit">&times;</button>
+                        </form>
+                    </div>
+
                     <h3><%= key.substr(-4,4) %> </h3>
                     
                     <p><%= value %></p>
@@ -42,15 +40,5 @@
                 </div>
             <% } %>
         </ul>
-        
-        <script>
-            var closebtns = document.getElementsByClassName("close-button");
-            var i;
-            for(i = 0; i < closebtns.length; i++) {
-                closebtns[i].addEventListener("click", function() {
-                    this.parentElement.remove();
-                });
-            }
-        </script>
         
 </html>
