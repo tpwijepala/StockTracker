@@ -1,14 +1,20 @@
 body {
-    min-width:300px;
-    align-items: center;
+    max-width:80%;
+    margin: auto;
     text-align: center;
+}
+
+.stockList {
+    list-style-type: none;
+    align-items: center;
 }
 
 .stockItem {
     width: 25%;
     padding: 5px;
+    margin: 2%;
+    display:inline-block;
     border: 3px solid gray;
-    margin: 2% auto;
     box-shadow: 5px 5px 2px gray;
   }
 
