@@ -23,7 +23,7 @@ function main() {
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
-                data[values[i][0]] = helper.extractString(values[i])
+                data[values[i][0]] = values[i]
             }
         })
         
@@ -45,11 +45,11 @@ function main() {
                 const url = searchURL + stockAdd
                 console.log("adding new stock "+stockAdd+" ...")
                 const newStock = await scrapStock.scrap(stockAdd);
-                res.setHeader("set-cookie", [stockAdd+"="+url]);
-                
-                data[stockAdd] = helper.extractString(newStock)
-                console.log(stockAdd + " has been added")
 
+                res.setHeader("set-cookie", [stockAdd+"="+url]);
+                data[stockAdd] = newStock
+
+                console.log(stockAdd + " has been added")
             } else {
                 console.log("Stock " + stockAdd + " has already been added previously")
             }

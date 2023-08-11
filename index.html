@@ -33,7 +33,14 @@
 
                     <h3><%= key %> </h3>
                     
-                    <p><%= value %></p>
+                    <% if (value[3][0]=='+') {  %>
+                        <p><%= value[1] + ', ' + value[2] + ', ' %>
+                           <span class='pos'> <%= value[3] + ', ' + value[4] %></span></p>
+                    <% } else { %>
+                        <p><%= value[1] + ', ' + value[2] + ', ' %>
+                            <span class='neg'> <%= value[3] + ', ' + value[4] %></span></p>
+                    <% } %>
+
                     <form action='<%= "https://ca.finance.yahoo.com/quote/" + key %>' method="get" target="_blank">
                         For more info: <button type="submit"><%= key %></button>
                     </form> <br>
