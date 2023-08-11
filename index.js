@@ -23,7 +23,7 @@ function main() {
         await Promise.all(helper.getStocks(cookies)).then(values => {
             var n = values.length
             for (let i = 0; i < n; i++){
-                data[searchURL+(values[i][0].substr(-5,4))] = helper.concatArray(values[i])
+                data[values[i][0]] = helper.extractString(values[i])
             }
         })
         
@@ -37,21 +37,21 @@ function main() {
 
     // updating html
     app.post("/", async (req, res) => {
-        const newStockAdd = req.body.stockAdd
+        const stockAdd = req.body.stockAdd
         const stockDelete = req.body.stockDelete
 
-        if (newStockAdd){
-            if (!req.cookies[newStockAdd]) {
-                const url = searchURL + newStockAdd
-                console.log("adding new stock "+newStockAdd+" ...")
-                const newStock = await scrapStock.scrap(url);
-                res.setHeader("set-cookie", [newStockAdd+"="+url]);
+        if (stockAdd){
+            if (!req.cookies[stockAdd]) {
+                const url = searchURL + stockAdd
+                console.log("adding new stock "+stockAdd+" ...")
+                const newStock = await scrapStock.scrap(stockAdd);
+                res.setHeader("set-cookie", [stockAdd+"="+url]);
                 
-                data[url] = helper.concatArray(newStock)
-                console.log(newStockAdd + " has been added")
+                data[stockAdd] = helper.extractString(newStock)
+                console.log(stockAdd + " has been added")
 
             } else {
-                console.log("Stock " + newStockAdd + " has already been added previously")
+                console.log("Stock " + stockAdd + " has already been added previously")
             }
         }
 
@@ -59,7 +59,7 @@ function main() {
             const url = req.cookies[stockDelete]
             if (url) {
                 res.clearCookie(stockDelete)
-                delete data[url];
+                delete data[stockDelete];
                 console.log(stockDelete + " has been removed")
             }
         }

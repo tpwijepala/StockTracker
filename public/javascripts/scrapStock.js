@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer-core')
+const searchURL = "https://ca.finance.yahoo.com/quote/";
 
 async function getName(page) {
     // Stock Name
@@ -33,8 +34,10 @@ async function getAdjPercent(page) {
     return perVal
 }
 
-async function scrapStock(url) {
-    
+async function scrapStock(stockName) {
+    var url = searchURL + stockName;
+    console.log(url)
+
     const browser = await puppeteer.launch({
         executablePath: './chrome-win64/chrome.exe', 
     });
@@ -49,7 +52,7 @@ async function scrapStock(url) {
     // await page.click(searchResultSelector);
     
     ret = await Promise.all(
-        [getName(page), getPrice(page), getAdjustment(page), getAdjPercent(page)]
+        [stockName, getName(page), getPrice(page), getAdjustment(page), getAdjPercent(page)]
         )
     browser.close();
 

@@ -26,16 +26,16 @@
                 <div id="<%= key %>" class="stockItem">
                     <div class="close-button">
                         <form action="/" method="post">
-                            <input type="hidden" name="stockDelete" value="<%= key.substr(-4,4) %>">
+                            <input type="hidden" name="stockDelete" value="<%= key %>">
                             <button type="submit">&times;</button>
                         </form>
                     </div>
 
-                    <h3><%= key.substr(-4,4) %> </h3>
+                    <h3><%= key %> </h3>
                     
                     <p><%= value %></p>
-                    <form action='<%= key %>' method="get" target="_blank">
-                        For more info: <button type="submit"><%= '('+key.substr(-4,4)+')' %></button>
+                    <form action='<%= "https://ca.finance.yahoo.com/quote/" + key %>' method="get" target="_blank">
+                        For more info: <button type="submit"><%= key %></button>
                     </form> <br>
                 </div>
             <% } %>
