@@ -23,29 +23,29 @@
 
         <ul class="stockList">
 
-            <% for (const [key, value] of Object.entries(data)) { %>
+            <% for (const [stockTicker, stockInfo] of Object.entries(stockInfo)) { %>
 
-                <li id="<%= key %>" class="stockItem">
+                <li id="<%= stockTicker %>" class="stockItem">
 
                     <div class="close-button">
                         <form action="/" method="post">
-                            <input type="hidden" name="stockDelete" value="<%= key %>">
+                            <input type="hidden" name="stockDelete" value="<%= stockTicker %>">
                             <button type="submit">&times;</button>
                         </form>
                     </div>
 
-                    <h3><%= key %> </h3>
+                    <h3><%= stockTicker %> </h3>
                     
-                    <% if (value[3][0]=='+') {  %>
-                        <p><%= value[1] + ', ' + value[2] + ', ' %> <br>
-                           <span class='pos'> <%= value[3] + ', ' + value[4] %></span></p>
+                    <% if (stockInfo[3][0]=='+') {  %>
+                        <p><%= stockInfo[1] + ', ' + stockInfo[2] + ', ' %> <br>
+                           <span class='pos'> <%= stockInfo[3] + ', ' + stockInfo[4] %></span></p>
                     <% } else { %>
-                        <p><%= value[1] + ', ' + value[2] + ', ' %> <br>
-                            <span class='neg'> <%= value[3] + ', ' + value[4] %></span></p>
+                        <p><%= stockInfo[1] + ', ' + stockInfo[2] + ', ' %> <br>
+                            <span class='neg'> <%= stockInfo[3] + ', ' + stockInfo[4] %></span></p>
                     <% } %>
 
-                    <form action='<%= "https://ca.finance.yahoo.com/quote/" + key %>' method="get" target="_blank">
-                        For more info: <button type="submit"><%= key %></button>
+                    <form action='<%= "https://ca.finance.yahoo.com/quote/" + stockTicker %>' method="get" target="_blank">
+                        For more info: <button type="submit"><%= stockTicker %></button>
                     </form> <br>
 
                 </li>

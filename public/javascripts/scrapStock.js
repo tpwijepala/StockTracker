@@ -15,7 +15,6 @@ async function getPrice(page) {
     const priceVal = await page.evaluate(element => element.textContent, element);
 
     return priceVal;
-   
 }
 
 async function getAdjustment(page) {
@@ -34,8 +33,13 @@ async function getAdjPercent(page) {
     return perVal
 }
 
-async function scrapStock(stockName) {
-    var url = searchURL + stockName;
+/**
+ * Gets infomation about a specific stock
+ * @param {string} stockTicker 
+ * @returns {Array<string>} [stockTicker, stockName, stockPrice, stockAdj, adjPer]
+ */
+async function scrapStockInfo(stockTicker) {
+    var url = searchURL + stockTicker;
 
     const browser = await puppeteer.launch({headless: "old"});
     const page = await browser.newPage();
@@ -49,12 +53,11 @@ async function scrapStock(stockName) {
     // await page.click(searchResultSelector);
     
     ret = await Promise.all(
-        [stockName, getName(page), getPrice(page), getAdjustment(page), getAdjPercent(page)]
-        )
-    browser.close();
+        [stockTicker, getName(page), getPrice(page), getAdjustment(page), getAdjPercent(page)]
+    )
 
-    // console.log(ret)
+    browser.close();
     return ret;
 }
 
-exports.scrap = scrapStock;
+exports.extractStockInfo = scrapStockInfo;

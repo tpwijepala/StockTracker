@@ -1,79 +1,82 @@
 const path = require("path");
 const express = require("express");
-// const window = require("window");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const scrapStock = require(__dirname+'/public/javascripts/scrapStock');
-const helper = require(__dirname+'/public/javascripts/helper');
+const { extractStockInfo } = require(__dirname+'/public/javascripts/scrapStock');
+const { retrieveStockInfo } = require(__dirname+'/public/javascripts/getStockData');
 const searchURL = "https://ca.finance.yahoo.com/quote/"
 
 function main() {
-    var stocks = [];
-    var data = [];
+    var stockInfo = {};
     
+    // retieving stock info using the list of stocks
     app.get("/", async (req, res) => {
-        stocks = []
-        data = {}
+        stockInfo = {}
         
-        var cookies = req.cookies;
+        var stockTickers = req.cookies;
         console.log("Retriving Stocks ...")
         var start = Date.now()
         
-        await Promise.all(helper.getStocks(cookies)).then(values => {
-            var n = values.length
-            for (let i = 0; i < n; i++){
-                data[values[i][0]] = values[i]
+        await Promise.all (
+            retrieveStockInfo(stockTickers) 
+        ).then(stocks => {
+            var n = stocks.length
+            for (let i = 0; i < n; i++) {
+                stockInfo[stocks[i][0]] = stocks[i]
             }
         })
         
         var delta = Date.now() - start
-        console.log("List of Stocks: [" + Object.keys(data).join(', ') + "]")
+        console.log("List of Stocks: [" + Object.keys(stockInfo).join(', ') + "]")
         console.log("Time Taken: " + (delta/1000) + '\n')
 
-        res.render(__dirname + '/index.html', {data:data});
-        
+        res.render(__dirname + '/index.html', {stockInfo:stockInfo});
     });
 
-    // updating html
+    // adding/removing stocks from current list of stocks
     app.post("/", async (req, res) => {
         const stockAdd = req.body.stockAdd
         const stockDelete = req.body.stockDelete
 
-        if (stockAdd){
+        if (stockAdd) {
             if (!req.cookies[stockAdd]) {
                 const url = searchURL + stockAdd
-                console.log("adding new stock "+stockAdd+" ...")
-                const newStock = await scrapStock.scrap(stockAdd);
+                console.log("adding new stock " + stockAdd + " ...")
+
+                const newStock = await extractStockInfo(stockAdd);
 
                 res.setHeader("set-cookie", [stockAdd+"="+url]);
-                data[stockAdd] = newStock
+                stockInfo[stockAdd] = newStock
 
                 console.log(stockAdd + " has been added\n")
+
             } else {
-                console.log("Stock " + stockAdd + " has already been added previously\n")
+                console.log("stock " + stockAdd + " has already been added previously\n")
             }
         }
 
-        if (stockDelete){
+        if (stockDelete) {
             const url = req.cookies[stockDelete]
+
             if (url) {
                 res.clearCookie(stockDelete)
-                delete data[stockDelete];
+                delete stockInfo[stockDelete];
+
                 console.log(stockDelete + " has been removed\n")
             }
         }
 
-        res.render(__dirname+'/index.html', {data:data})
-
+        res.render(__dirname+'/index.html', {stockInfo:stockInfo})
     });
-    
 
+    // setting up a connection
     app.listen(5000, () => {
         console.log("listing on port 5000\n");
     });  
 }
 
+// setting up app
 const app = express();
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname+'/public'));
