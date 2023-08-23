@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer-core')
+const puppeteer = require('puppeteer')
 const searchURL = "https://ca.finance.yahoo.com/quote/";
 
 async function getName(page) {
@@ -37,9 +37,7 @@ async function getAdjPercent(page) {
 async function scrapStock(stockName) {
     var url = searchURL + stockName;
 
-    const browser = await puppeteer.launch({
-        executablePath: './chrome-win64/chrome.exe', 
-    });
+    const browser = await puppeteer.launch({headless: "old"});
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(150000);
     await page.goto(url, {waitUntil: "domcontentloaded",});
