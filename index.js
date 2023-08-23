@@ -28,9 +28,9 @@ function main() {
         })
         
         var delta = Date.now() - start
-        console.log("Time Taken: " + (delta/1000))
+        console.log("List of Stocks: [" + Object.keys(data).join(', ') + "]")
+        console.log("Time Taken: " + (delta/1000) + '\n')
 
-        console.log(data)
         res.render(__dirname + '/index.html', {data:data});
         
     });
@@ -49,9 +49,9 @@ function main() {
                 res.setHeader("set-cookie", [stockAdd+"="+url]);
                 data[stockAdd] = newStock
 
-                console.log(stockAdd + " has been added")
+                console.log(stockAdd + " has been added\n")
             } else {
-                console.log("Stock " + stockAdd + " has already been added previously")
+                console.log("Stock " + stockAdd + " has already been added previously\n")
             }
         }
 
@@ -60,7 +60,7 @@ function main() {
             if (url) {
                 res.clearCookie(stockDelete)
                 delete data[stockDelete];
-                console.log(stockDelete + " has been removed")
+                console.log(stockDelete + " has been removed\n")
             }
         }
 
@@ -70,7 +70,7 @@ function main() {
     
 
     app.listen(5000, () => {
-        console.log("listing on port 5000");
+        console.log("listing on port 5000\n");
     });  
 }
 

@@ -36,7 +36,6 @@ async function getAdjPercent(page) {
 
 async function scrapStock(stockName) {
     var url = searchURL + stockName;
-    console.log(url)
 
     const browser = await puppeteer.launch({
         executablePath: './chrome-win64/chrome.exe', 
