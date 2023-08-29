@@ -12,6 +12,7 @@
     </head>
     
     <body>
+        <br>
         <h1>Stock Tracker</h1>
 
         <form action="/" method="post">
@@ -23,29 +24,29 @@
 
         <ul class="stockList">
 
-            <% for (const [stockTicker, stockInfo] of Object.entries(stockInfo)) { %>
+            <% for (const [ticker, info] of Object.entries(stockInfo)) { %>
 
-                <li id="<%= stockTicker %>" class="stockItem">
+                <li id="<%= ticker %>" class="stockItem">
 
                     <div class="close-button">
                         <form action="/" method="post">
-                            <input type="hidden" name="stockDelete" value="<%= stockTicker %>">
+                            <input type="hidden" name="stockDelete" value="<%= ticker %>">
                             <button type="submit">&times;</button>
                         </form>
                     </div>
 
-                    <h3><%= stockTicker %> </h3>
+                    <h3><%= ticker %> </h3>
                     
-                    <% if (stockInfo[3][0]=='+') {  %>
-                        <p><%= stockInfo[1] + ', ' + stockInfo[2] + ', ' %> <br>
-                           <span class='pos'> <%= stockInfo[3] + ', ' + stockInfo[4] %></span></p>
+                    <% if (info[3][0]=='+') {  %>
+                        <p><%= info[1] + ', ' + info[2] + ', ' %> <br>
+                           <span class='pos'> <%= info[3] + ', ' + info[4] %></span></p>
                     <% } else { %>
-                        <p><%= stockInfo[1] + ', ' + stockInfo[2] + ', ' %> <br>
-                            <span class='neg'> <%= stockInfo[3] + ', ' + stockInfo[4] %></span></p>
+                        <p><%= info[1] + ', ' + info[2] + ', ' %> <br>
+                            <span class='neg'> <%= info[3] + ', ' + info[4] %></span></p>
                     <% } %>
 
-                    <form action='<%= "https://ca.finance.yahoo.com/quote/" + stockTicker %>' method="get" target="_blank">
-                        For more info: <button type="submit"><%= stockTicker %></button>
+                    <form action='<%= "https://ca.finance.yahoo.com/quote/" + ticker %>' method="get" target="_blank">
+                        For more info: <button type="submit"><%= ticker %></button>
                     </form> <br>
 
                 </li>
